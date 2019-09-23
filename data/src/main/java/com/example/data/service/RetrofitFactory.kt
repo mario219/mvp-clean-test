@@ -20,7 +20,6 @@ internal class RetrofitFactory {
         private val BASE_URL: String = BuildConfig.BASE_URL
 
         private fun getInstance(): Retrofit.Builder {
-            Log.d(TAG,"getInstance() called")
             val clientBuilder = OkHttpClient().newBuilder()
 
             val interceptor = Interceptor { chain ->
@@ -57,7 +56,6 @@ internal class RetrofitFactory {
         }
 
         fun <T> getService(type: Class<T>): T {
-            Log.d(TAG, "getServiceInstance() called with: type = [$type]")
             val retrofit = getInstance()
             return retrofit.build().create(type)
         }

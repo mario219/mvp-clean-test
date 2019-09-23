@@ -1,4 +1,6 @@
 package com.example.domain.constants
 
-val EMPTY_STRING = ""
-val ZERO_DOUBLE = 0.0
+const val EMPTY_STRING = ""
+const val ZERO_DOUBLE = 0.0
+const val REVOLUT = "REVOLUT_TAG"
+const val CURRENCY_FETCHED = "Currencies fetched"

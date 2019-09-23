@@ -8,7 +8,8 @@ interface HomeContract {
     interface HomeView
 
     interface HomePresenter {
-        fun init()
+        fun initCurrencyObserver()
+        fun onPause()
     }
 
     interface HomeModel {
