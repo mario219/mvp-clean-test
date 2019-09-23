@@ -1,4 +1,4 @@
 package com.example.domain;
 
-public class MyClass {
+public class Main {
 }
