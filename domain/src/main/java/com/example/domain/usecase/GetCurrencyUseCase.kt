@@ -9,7 +9,7 @@ import javax.inject.Inject
 class GetCurrencyUseCase @Inject constructor(private val currencyRepository: CurrencyRepository) {
 
     fun getCurrency(): Single<BaseRates> =
-        currencyRepository.getCurrency().subscribeOn(Schedulers.io())
+        currencyRepository.getCurrency().subscribeOn(Schedulers.newThread())
 
     fun getCachedCurrency(): Single<BaseRates> =
         currencyRepository.getCachedCurrency().subscribeOn(Schedulers.io())
