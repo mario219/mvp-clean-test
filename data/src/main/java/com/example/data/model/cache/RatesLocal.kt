@@ -2,8 +2,10 @@ package com.example.data.model.cache
 
 import com.example.domain.constants.ONE_DOUBLE
 import io.realm.RealmObject
+import io.realm.annotations.PrimaryKey
 
 open class RatesLocal : RealmObject() {
+    @PrimaryKey var id = 1
     var eur: Double = ONE_DOUBLE
     var aud: Double = ONE_DOUBLE
     var bgn: Double = ONE_DOUBLE
