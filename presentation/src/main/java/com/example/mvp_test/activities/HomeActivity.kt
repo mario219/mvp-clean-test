@@ -1,4 +1,4 @@
-package com.example.mvp_test.mvp.activity
+package com.example.mvp_test.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -25,5 +25,15 @@ class HomeActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         presenter.initCurrencyObserver()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        presenter.onSaveInstanceState(outState)
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        presenter.onRestoreInstanceState(savedInstanceState)
     }
 }

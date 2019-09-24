@@ -1,8 +1,8 @@
 package com.example.mvp_test.mvp.home
 
 import android.annotation.SuppressLint
+import android.os.Bundle
 import android.util.Log
-import com.example.domain.constants.CURRENCY_FETCHED
 import com.example.domain.constants.REVOLUT
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -29,13 +29,23 @@ class HomePresenter @Inject constructor(
             intervalHandler.dispose()
     }
 
+    override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
+        view.onRestoreInstanceState(savedInstanceState)
+    }
+
+    override fun onSaveInstanceState(outState: Bundle?) {
+        view.onSaveInstanceState(outState)
+    }
+
     @SuppressLint("CheckResult")
     private fun callService() {
         model.fetchCurrencies()
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 { baseRate ->
-                    Log.d(REVOLUT, CURRENCY_FETCHED) },
+                    view.saveInstanceState()
+                    view.fillRecycler(baseRate)
+                },
                 { error ->
                     Log.e(REVOLUT, error.toString())
                 })

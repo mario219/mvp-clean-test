@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:name=".CurrencyApp"
         android:theme="@style/AppTheme">
-        <activity android:name=".mvp.activity.HomeActivity">
+        <activity android:name="com.example.mvp_test.activities.HomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
