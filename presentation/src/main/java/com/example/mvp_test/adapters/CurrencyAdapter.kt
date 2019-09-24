@@ -13,6 +13,7 @@ import com.example.mvp_test.utils.inflate
 class CurrencyAdapter : RecyclerView.Adapter<CurrencyAdapter.CurrencyViewHolder>() {
 
     private var ratesInfo = listOf<Double>()
+    private lateinit var listener: (baseRate: String) -> Unit
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CurrencyViewHolder =
         CurrencyViewHolder(parent.inflate(R.layout.item_currency))
@@ -28,21 +29,24 @@ class CurrencyAdapter : RecyclerView.Adapter<CurrencyAdapter.CurrencyViewHolder>
         notifyDataSetChanged()
     }
 
+    fun setOnTapCurrencyListener(listener: (baseRate: String) -> Unit) {
+        this.listener = listener
+    }
+
     inner class CurrencyViewHolder(item: View) : RecyclerView.ViewHolder(item) {
 
-        fun bind(ccode: String, rate: Double) {
-            if (!firstLoadDone) {
-                currencyCode.text = ccode
-                firstLoadDone = true
-            }
+        fun bind(cCode: String, rate: Double) {
+            currencyCode.text = cCode
             inputCurrency.setText(rate.toString())
+            inputCurrency.setOnClickListener {
+                listener(cCode)
+            }
         }
 
+        // TODO: To improvements we can fetch country flags from another API and load it here with Glide
         private val countryFlag: ImageView = item.findViewById(R.id.img_country_currency)
         private val currencyCode: TextView = item.findViewById(R.id.text_currency_code)
         private val currencyCountry: TextView = item.findViewById(R.id.text_country_currency)
         private val inputCurrency: EditText = item.findViewById(R.id.input_currency)
-
-        private var firstLoadDone = false
     }
 }

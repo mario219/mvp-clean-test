@@ -2,17 +2,17 @@ package com.example.data.mappers
 
 import com.example.data.model.cache.BaseRatesLocal
 import com.example.data.model.cache.RatesLocal
+import com.example.domain.constants.ONE_DOUBLE
 import com.example.domain.model.BaseRates
-import com.example.domain.model.Rates
 import javax.inject.Inject
 
-internal class CurrencyLocalMapper @Inject constructor() : BaseMapper<BaseRatesLocal, BaseRates> {
+internal class CurrencyLocalMapper @Inject constructor() : BaseMapper<BaseRatesLocal, BaseRates>, MapperUtils() {
 
     override fun transform(input: BaseRatesLocal): BaseRates {
         return BaseRates().apply {
             base = input.base
             date = input.date
-            rates = mapLocalRates(input.rates!!)
+            rates = input.rates.convert()
         }
     }
 
@@ -24,77 +24,41 @@ internal class CurrencyLocalMapper @Inject constructor() : BaseMapper<BaseRatesL
         }
     }
 
-    private fun mapRates(rates: Rates): RatesLocal {
+    private fun mapRates(rates: Map<String, Double>): RatesLocal {
         return RatesLocal().apply {
-            aud = rates.aud
-            bgn = rates.bgn
-            brl = rates.brl
-            cad = rates.cad
-            chf = rates.chf
-            cny = rates.cny
-            czk = rates.czk
-            dkk = rates.dkk
-            gbp = rates.gbp
-            hkd = rates.hkd
-            hrk = rates.hrk
-            huf = rates.huf
-            idr = rates.idr
-            ils = rates.ils
-            inr = rates.inr
-            isk = rates.isk
-            jpy = rates.jpy
-            krw = rates.krw
-            mxn = rates.mxn
-            myr = rates.myr
-            nok = rates.nok
-            nzd = rates.nzd
-            php = rates.php
-            pln = rates.pln
-            ron = rates.ron
-            rub = rates.rub
-            sek = rates.sek
-            sgd = rates.sgd
-            thb = rates.thb
-            tryy = rates.tryy
-            usd = rates.usd
-            zar = rates.zar
-        }
-    }
-
-    private fun mapLocalRates(ratesLocal: RatesLocal): Rates {
-        return Rates().apply {
-            aud = ratesLocal.aud
-            bgn = ratesLocal.bgn
-            brl = ratesLocal.brl
-            cad = ratesLocal.cad
-            chf = ratesLocal.chf
-            cny = ratesLocal.cny
-            czk = ratesLocal.czk
-            dkk = ratesLocal.dkk
-            gbp = ratesLocal.gbp
-            hkd = ratesLocal.hkd
-            hrk = ratesLocal.hrk
-            huf = ratesLocal.huf
-            idr = ratesLocal.idr
-            ils = ratesLocal.ils
-            inr = ratesLocal.inr
-            isk = ratesLocal.isk
-            jpy = ratesLocal.jpy
-            krw = ratesLocal.krw
-            mxn = ratesLocal.mxn
-            myr = ratesLocal.myr
-            nok = ratesLocal.nok
-            nzd = ratesLocal.nzd
-            php = ratesLocal.php
-            pln = ratesLocal.pln
-            ron = ratesLocal.ron
-            rub = ratesLocal.rub
-            sek = ratesLocal.sek
-            sgd = ratesLocal.sgd
-            thb = ratesLocal.thb
-            tryy = ratesLocal.tryy
-            usd = ratesLocal.usd
-            zar = ratesLocal.zar
+            eur = rates["eur"] ?: ONE_DOUBLE
+            aud = rates["aud"] ?: ONE_DOUBLE
+            bgn = rates["bgn"] ?: ONE_DOUBLE
+            brl = rates["brl"] ?: ONE_DOUBLE
+            cad = rates["cad"] ?: ONE_DOUBLE
+            chf = rates["chf"] ?: ONE_DOUBLE
+            cny = rates["cny"] ?: ONE_DOUBLE
+            czk = rates["czk"] ?: ONE_DOUBLE
+            dkk = rates["dkk"] ?: ONE_DOUBLE
+            gbp = rates["gbp"] ?: ONE_DOUBLE
+            hkd = rates["hkd"] ?: ONE_DOUBLE
+            hrk = rates["hrk"] ?: ONE_DOUBLE
+            huf = rates["huf"] ?: ONE_DOUBLE
+            idr = rates["idr"] ?: ONE_DOUBLE
+            ils = rates["ils"] ?: ONE_DOUBLE
+            inr = rates["inr"] ?: ONE_DOUBLE
+            isk = rates["isk"] ?: ONE_DOUBLE
+            jpy = rates["jpy"] ?: ONE_DOUBLE
+            krw = rates["krw"] ?: ONE_DOUBLE
+            mxn = rates["mxn"] ?: ONE_DOUBLE
+            myr = rates["myr"] ?: ONE_DOUBLE
+            nok = rates["nok"] ?: ONE_DOUBLE
+            nzd = rates["nzd"] ?: ONE_DOUBLE
+            php = rates["php"] ?: ONE_DOUBLE
+            pln = rates["pln"] ?: ONE_DOUBLE
+            ron = rates["ron"] ?: ONE_DOUBLE
+            rub = rates["rub"] ?: ONE_DOUBLE
+            sek = rates["sek"] ?: ONE_DOUBLE
+            sgd = rates["sgd"] ?: ONE_DOUBLE
+            thb = rates["thb"] ?: ONE_DOUBLE
+            tryy = rates["tryy"] ?: ONE_DOUBLE
+            usd = rates["usd"] ?: ONE_DOUBLE
+            zar = rates["zar"] ?: ONE_DOUBLE
         }
     }
 }

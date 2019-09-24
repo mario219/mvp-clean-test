@@ -17,11 +17,19 @@ class HomePresenter @Inject constructor(
 
     private lateinit var intervalHandler: Disposable
 
-    override fun initCurrencyObserver() {
+    override fun initCurrencyObserver(baseRate: String) {
         intervalHandler = Observable
             .interval(0, 1, TimeUnit.SECONDS)
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({ callService() }, { error -> Log.d(REVOLUT, error.toString()) })
+            .subscribe({ callService(baseRate) }, { error -> Log.d(REVOLUT, error.toString()) })
+    }
+
+    override fun setOnTapCurrencyListener() {
+        view.setOnTapCurrencyListener { baseRate ->
+            if (!intervalHandler.isDisposed)
+                intervalHandler.dispose()
+            initCurrencyObserver(baseRate)
+        }
     }
 
     override fun onPause() {
@@ -30,24 +38,23 @@ class HomePresenter @Inject constructor(
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
-        view.onRestoreInstanceState(savedInstanceState)
+        // view.onRestoreInstanceState(savedInstanceState)
     }
 
     override fun onSaveInstanceState(outState: Bundle?) {
-        view.onSaveInstanceState(outState)
+        // view.onSaveInstanceState(outState)
     }
 
     @SuppressLint("CheckResult")
-    private fun callService() {
-        model.fetchCurrencies()
+    private fun callService(baseRate: String) {
+        model.fetchCurrencies(baseRate)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 { baseRate ->
-                    view.saveInstanceState()
-                    view.fillRecycler(baseRate)
+                    Log.d(REVOLUT, "fetched")
+//                    view.saveInstanceState()
+//                    view.fillRecycler(baseRate)
                 },
-                { error ->
-                    Log.e(REVOLUT, error.toString())
-                })
+                { error -> Log.e(REVOLUT, error.toString()) })
     }
 }

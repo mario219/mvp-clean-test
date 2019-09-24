@@ -5,6 +5,6 @@ import io.reactivex.Single
 
 interface CurrencyRepository {
 
-    fun getCurrency(): Single<BaseRates>
+    fun getCurrency(baseRate: String): Single<BaseRates>
     fun getCachedCurrency(): Single<BaseRates>
 }

@@ -23,14 +23,12 @@ class HomeView @Inject constructor(
         recycler = activity.findViewById(R.id.recycler)
         recycler.adapter = currencyAdapter
         recycler.layoutManager = LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
-        currencyAdapter.addItems(createListOfRates(baseRates.rates))
+        // currencyAdapter.addItems(createListOfRates(baseRates.rates))
         recycler.layoutManager?.onRestoreInstanceState(recyclerState)
     }
 
-    override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
-        savedInstanceState?.run {
-            recycler.layoutManager?.onRestoreInstanceState(getParcelable(RECYCLER_STATE))
-        }
+    override fun setOnTapCurrencyListener(listener: (baseRate: String) -> Unit) {
+        currencyAdapter.setOnTapCurrencyListener(listener)
     }
 
     override fun saveInstanceState() {
@@ -42,6 +40,12 @@ class HomeView @Inject constructor(
     override fun onSaveInstanceState(outState: Bundle?) {
         outState?.run {
             putParcelable(RECYCLER_STATE, recycler.layoutManager?.onSaveInstanceState())
+        }
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
+        savedInstanceState?.run {
+            recycler.layoutManager?.onRestoreInstanceState(getParcelable(RECYCLER_STATE))
         }
     }
 

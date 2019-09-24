@@ -2,6 +2,7 @@ package com.example.mvp_test.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.example.domain.constants.BASE_RATE
 import com.example.mvp_test.R
 import com.example.mvp_test.mvp.home.HomeContract
 import dagger.android.AndroidInjection
@@ -10,6 +11,7 @@ import javax.inject.Inject
 class HomeActivity : AppCompatActivity() {
 
     @Inject lateinit var presenter: HomeContract.HomePresenter
+    private var baseRate = BASE_RATE
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
@@ -24,7 +26,8 @@ class HomeActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        presenter.initCurrencyObserver()
+        presenter.initCurrencyObserver(baseRate)
+        presenter.setOnTapCurrencyListener()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
