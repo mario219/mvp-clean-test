@@ -24,7 +24,7 @@ internal class CurrencyLocalMapper @Inject constructor() : BaseMapper<BaseRatesL
         }
     }
 
-    private fun mapRates(rates: Map<String, Double>): RatesLocal {
+    private fun mapRates(rates: MutableMap<String, Double>): RatesLocal {
         return RatesLocal().apply {
             eur = rates["EUR"] ?: ONE_DOUBLE
             aud = rates["AUD"] ?: ONE_DOUBLE

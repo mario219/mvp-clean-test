@@ -2,21 +2,28 @@ package com.example.mvp_test.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.LayoutInflater
 import com.example.domain.constants.BASE_RATE
 import com.example.mvp_test.R
+import com.example.mvp_test.databinding.ActivityHomeBinding
 import com.example.mvp_test.mvp.home.HomeContract
+import com.example.mvp_test.mvp.home.HomePresenter
 import dagger.android.AndroidInjection
 import javax.inject.Inject
 
 class HomeActivity : AppCompatActivity() {
 
     @Inject lateinit var presenter: HomeContract.HomePresenter
-    private var baseRate = BASE_RATE
+    private lateinit var activityHomeBinding: ActivityHomeBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_home)
+        activityHomeBinding = ActivityHomeBinding.inflate(layoutInflater)
+        activityHomeBinding.lifecycleOwner = this
+        activityHomeBinding.presenter = presenter as HomePresenter
+        setContentView(activityHomeBinding.root)
+        presenter.initView()
     }
 
     override fun onPause() {
@@ -26,7 +33,7 @@ class HomeActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        presenter.initCurrencyObserver(baseRate)
+        presenter.initCurrencyObserver()
         presenter.setOnTapCurrencyListener()
     }
 

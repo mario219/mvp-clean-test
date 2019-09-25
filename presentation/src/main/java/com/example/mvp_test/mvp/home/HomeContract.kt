@@ -7,14 +7,19 @@ import io.reactivex.Single
 interface HomeContract {
 
     interface HomeView {
-        fun fillRecycler(baseRates: BaseRates)
+        fun init()
+        fun fillRecycler(baseRates: MutableMap<String, Double>)
         fun setOnTapCurrencyListener(listener: (baseRate: String) -> Unit)
+        fun scrollRecyclerToTop()
         fun onSaveInstanceState(outState: Bundle?)
         fun onRestoreInstanceState(savedInstanceState: Bundle?)
         fun saveInstanceState()
+        fun clearInstanceState()
     }
 
     interface HomePresenter {
+        fun initView()
+        fun initCurrencyObserver()
         fun initCurrencyObserver(baseRate: String)
         fun setOnTapCurrencyListener()
         fun onPause()

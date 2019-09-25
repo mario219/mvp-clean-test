@@ -17,7 +17,7 @@ abstract class MapperUtils {
 
     val gson = Gson()
 
-    fun <T> T.serializeToMap(): Map<String, Double> {
+    fun <T> T.serializeToMap(): MutableMap<String, Double> {
         return convert()
     }
 
