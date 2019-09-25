@@ -12,8 +12,8 @@ class CurrencyRepositoryImpl @Inject constructor(
     private val currencyRemoteDataSource: CurrencyRemoteDataSource
 ) : CurrencyRepository {
 
-    override fun getCurrency(): Single<BaseRates> =
-        currencyRemoteDataSource.getCurrency().flatMap { baseRates ->
+    override fun getCurrency(baseRate: String): Single<BaseRates> =
+        currencyRemoteDataSource.getCurrency(baseRate).flatMap { baseRates ->
             currencyLocalDataSource.saveCurrency(baseRates).andThen(Single.just(baseRates))
         }
 

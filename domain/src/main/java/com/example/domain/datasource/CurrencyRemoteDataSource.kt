@@ -5,5 +5,5 @@ import io.reactivex.Single
 
 interface CurrencyRemoteDataSource {
 
-    fun getCurrency(): Single<BaseRates>
+    fun getCurrency(baseRate: String): Single<BaseRates>
 }

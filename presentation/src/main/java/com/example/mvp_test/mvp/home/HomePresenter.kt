@@ -3,7 +3,11 @@ package com.example.mvp_test.mvp.home
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
+import androidx.lifecycle.MutableLiveData
+import com.example.domain.constants.BASE_RATE
+import com.example.domain.constants.ONE_DOUBLE
 import com.example.domain.constants.REVOLUT
+import com.example.mvp_test.model.CurrencyDataModel
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -16,12 +20,37 @@ class HomePresenter @Inject constructor(
 ): HomeContract.HomePresenter {
 
     private lateinit var intervalHandler: Disposable
+    private var baseRate = BASE_RATE
+    var baseRateLD = MutableLiveData<CurrencyDataModel>().apply { value = CurrencyDataModel(BASE_RATE, ONE_DOUBLE) }
+
+    override fun initView() {
+        view.init()
+    }
 
     override fun initCurrencyObserver() {
+        initCurrencyObserver(baseRate)
+    }
+
+    override fun initCurrencyObserver(baseRate: String) {
+        this.baseRate = baseRate
+        baseRateLD.value = CurrencyDataModel(baseRate, ONE_DOUBLE)
         intervalHandler = Observable
             .interval(0, 1, TimeUnit.SECONDS)
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({ callService() }, { error -> Log.d(REVOLUT, error.toString()) })
+            .subscribe({ callService(baseRate) }, { error -> Log.d(REVOLUT, error.toString()) })
+    }
+
+    override fun setOnTapCurrencyListener() {
+        view.setOnTapCurrencyListener { baseRate ->
+            if (!intervalHandler.isDisposed)
+                intervalHandler.dispose()
+            view.scrollRecyclerToTop()
+            initCurrencyObserver(baseRate)
+        }
+    }
+
+    override fun setMultiplier(number: Double) {
+        view.setMultiplier(number)
     }
 
     override fun onPause() {
@@ -38,16 +67,24 @@ class HomePresenter @Inject constructor(
     }
 
     @SuppressLint("CheckResult")
-    private fun callService() {
-        model.fetchCurrencies()
+    private fun callService(baseRate: String) {
+        model.fetchCurrencies(baseRate)
+            .map { baseRates ->
+                baseRates.rates.remove(baseRate)
+                val finalMap = mutableMapOf<String, Double>()
+                finalMap[baseRate] = ONE_DOUBLE
+                baseRates.rates.forEach {
+                    finalMap[it.key] = it.value
+                }
+                finalMap.remove(baseRate)
+                finalMap
+            }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
-                { baseRate ->
+                { ratesResults ->
                     view.saveInstanceState()
-                    view.fillRecycler(baseRate)
+                    view.fillRecycler(ratesResults)
                 },
-                { error ->
-                    Log.e(REVOLUT, error.toString())
-                })
+                { error -> Log.e(REVOLUT, error.toString()) })
     }
 }

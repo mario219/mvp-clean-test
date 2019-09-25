@@ -12,14 +12,10 @@ internal class CurrencyRemoteDataSourceImpl @Inject constructor(
     private val mapper: CurrencyRemoteMapper
 ) : CurrencyRemoteDataSource {
 
-    override fun getCurrency(): Single<BaseRates> {
-        return revolutService.getLatests(BASE_RATE)
+    override fun getCurrency(baseRate: String): Single<BaseRates> {
+        return revolutService.getLatests(baseRate)
             .map { baseRate ->
                 mapper.transform(baseRate)
             }
-    }
-
-    companion object {
-        const val BASE_RATE = "EUR"
     }
 }
