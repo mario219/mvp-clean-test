@@ -2,14 +2,11 @@ package com.example.mvp_test.mvp.home
 
 import android.os.Bundle
 import android.os.Parcelable
-import android.view.LayoutInflater
-import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mvp_test.R
 import com.example.mvp_test.activities.HomeActivity
 import com.example.mvp_test.adapters.CurrencyAdapter
-import com.example.mvp_test.databinding.ItemCurrencyBinding
 import javax.inject.Inject
 
 class HomeView @Inject constructor(
