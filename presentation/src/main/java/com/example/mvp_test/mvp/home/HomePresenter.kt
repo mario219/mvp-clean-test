@@ -49,6 +49,10 @@ class HomePresenter @Inject constructor(
         }
     }
 
+    override fun setMultiplier(number: Double) {
+        view.setMultiplier(number)
+    }
+
     override fun onPause() {
         if (::intervalHandler.isInitialized && !intervalHandler.isDisposed)
             intervalHandler.dispose()

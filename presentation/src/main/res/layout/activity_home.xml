@@ -16,7 +16,7 @@
         android:orientation="vertical"
         tools:context=".activities.HomeActivity">
 
-        <include layout="@layout/item_currency"
+        <include layout="@layout/item_currency" android:id="@+id/layout_row"
             app:currencyDataModel="@{presenter.baseRateLD}" />
 
         <androidx.recyclerview.widget.RecyclerView
